@@ -1,15 +1,15 @@
-files = ['data/log1.txt','data/log2.txt']
+files = ['data/log1.tsv','data/log2.tsv']
+color = {'OKBLUE':'\033[94m','OKGREEN':'\033[92m','WARNING':'\033[93m','FAIL':'\033[91m','ENDC':'\033[0m'}
 table = {}
-step = 0
 
-def sourceProcessingStep(f):
+def sourceDataStep(f):
     for line in open(f, 'r+'):
         line = line.rstrip().split('\t')
         key = tuple(line[0:4])
         if key not in table:
             table[key] = [[float(v) for v in line[4:]],[]]
 
-def comparisonStep(f):
+def comparisonDataStep(f):
     for line in open(f, 'r+'):
         line = line.rstrip().split('\t')
         key = tuple(line[0:4])
@@ -19,17 +19,29 @@ def comparisonStep(f):
             print('the columm does not match')
 
 def printResilt():
-    print('result')
+    print('== result =='+color['ENDC'])
+    for col in table:
+        print(col,end="\t")
+        for i in range(0,len(table[col][0])):
+            print(color['ENDC'],end="")
+            print(table[col][0][i],end=" ")
+            if table[col][0][i] >  table[col][1][i]:
+                print(color['OKBLUE'],end="")
+            elif table[col][0][i] <  table[col][1][i]:
+                print(color['FAIL'],end="")
+            else:
+                print(color['ENDC'],end="")
+            print(table[col][1][i],end="\t")
+        print()
 
 if __name__ == "__main__":
+    step = 0
     for f in files:
         print(f)
         if step == 0:
-            sourceProcessingStep(f)
+            sourceDataStep(f)
         elif step == 1:
-            comparisonStep(f)
-
+            comparisonDataStep(f)
         step+=1
-        print(table)
 
     printResilt()
