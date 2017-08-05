@@ -21,14 +21,15 @@ def comparisonStep(f):
 def printResilt():
     print('result')
 
-for f in files:
-    print(f)
-    if step == 0:
-        sourceProcessingStep(f)
-    elif step == 1:
-        comparisonStep(f)
+if __name__ == "__main__":
+    for f in files:
+        print(f)
+        if step == 0:
+            sourceProcessingStep(f)
+        elif step == 1:
+            comparisonStep(f)
 
-    step+=1
-    print(table)
+        step+=1
+        print(table)
 
-printResilt()
+    printResilt()
